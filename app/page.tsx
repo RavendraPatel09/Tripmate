@@ -185,7 +185,7 @@ export default function Home() {
             <p className="text-muted-foreground text-lg">Everything you need to know about TripMate.</p>
           </div>
 
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion className="w-full">
             <AccordionItem value="item-1" className="bg-background px-6 rounded-lg mb-4 border shadow-sm">
               <AccordionTrigger className="text-left font-semibold">How accurate is the budget estimator?</AccordionTrigger>
               <AccordionContent className="text-muted-foreground leading-relaxed">

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plane, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { Plane, Globe } from "lucide-react";
 
 export function Footer() {
   return (
@@ -18,16 +18,7 @@ export function Footer() {
             </p>
             <div className="flex gap-4 pt-2">
               <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Facebook className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Twitter className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Instagram className="h-5 w-5" />
-              </Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary transition-colors">
-                <Youtube className="h-5 w-5" />
+                <Globe className="h-5 w-5" />
               </Link>
             </div>
           </div>

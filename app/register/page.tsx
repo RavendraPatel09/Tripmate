@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { Loader2, Mail, Lock, User, Chrome } from "lucide-react";
+import { Loader2, Mail, Lock, User, Globe } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -142,7 +142,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <Button variant="outline" type="button" disabled={isLoading} className="w-full">
-              <Chrome className="mr-2 h-4 w-4" />
+              <Globe className="mr-2 h-4 w-4" />
               Google
             </Button>
           </div>
