@@ -50,7 +50,7 @@ export function HeroSearch() {
         
         <div className="space-y-2">
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Travelers</label>
-          <Select value={travelers} onValueChange={setTravelers}>
+          <Select value={travelers} onValueChange={(val) => setTravelers(val || "1")}>
             <SelectTrigger className="bg-muted/50 border-transparent">
               <div className="flex items-center gap-2">
                 <Users className="h-4 w-4 text-muted-foreground" />
@@ -68,7 +68,7 @@ export function HeroSearch() {
         
         <div className="space-y-2">
           <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Travel Style</label>
-          <Select value={style} onValueChange={setStyle}>
+          <Select value={style} onValueChange={(val) => setStyle(val || "any")}>
             <SelectTrigger className="bg-muted/50 border-transparent">
               <SelectValue placeholder="Select style" />
             </SelectTrigger>
