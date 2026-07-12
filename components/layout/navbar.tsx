@@ -23,7 +23,9 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center transition-transform hover:scale-105">
-          <img src="/logo.png" alt="TripMate Logo" className="h-10 w-auto object-contain" />
+          <div className="bg-white rounded-lg p-1.5 flex items-center justify-center shadow-sm">
+            <img src="/logo_transparent.png" alt="TripMate Logo" className="h-8 w-auto object-contain" />
+          </div>
         </Link>
 
         {/* Desktop Navigation */}

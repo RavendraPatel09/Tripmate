@@ -8,7 +8,9 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link href="/" className="flex items-center">
-              <img src="/logo.png" alt="TripMate Logo" className="h-8 w-auto object-contain mb-2" />
+              <div className="bg-white rounded-lg p-1.5 inline-flex items-center justify-center shadow-sm mb-2">
+                <img src="/logo_transparent.png" alt="TripMate Logo" className="h-8 w-auto object-contain" />
+              </div>
             </Link>
             <p className="text-muted-foreground text-sm">
               Your intelligent travel companion for seamless journeys, budget planning, and unforgettable experiences.
