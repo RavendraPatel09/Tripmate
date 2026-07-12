@@ -70,3 +70,63 @@ export interface BudgetEstimate {
   emergencyFund: number;
   total: number;
 }
+
+export interface PackingItem {
+  id: string;
+  name: string;
+  category: 'Clothes' | 'Electronics' | 'Medicines' | 'Documents' | 'Accessories';
+  isPacked: boolean;
+}
+
+export interface Expense {
+  id: string;
+  amount: number;
+  category: 'Food' | 'Transport' | 'Hotel' | 'Shopping' | 'Activities';
+  description: string;
+  date: string;
+}
+
+export interface GroupMember {
+  id: string;
+  name: string;
+  avatar: string;
+  balance: number;
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  progress: number;
+  maxProgress: number;
+  isUnlocked: boolean;
+}
+
+export interface EventItem {
+  id: string;
+  name: string;
+  date: string;
+  location: string;
+  description: string;
+  popularity: number;
+  image: string;
+}
+
+export interface EmergencyContact {
+  id: string;
+  name: string;
+  type: 'Hospital' | 'Police' | 'Petrol Pump' | 'ATM' | 'Pharmacy';
+  phone: string;
+  distance: string;
+  address: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  title: string;
+  message: string;
+  type: 'trip' | 'budget' | 'weather' | 'community' | 'event';
+  isRead: boolean;
+  date: string;
+}
