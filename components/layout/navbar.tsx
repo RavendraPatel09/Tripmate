@@ -22,13 +22,8 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
-          <div className="bg-primary p-1.5 rounded-xl">
-            <Plane className="h-5 w-5 text-primary-foreground fill-current" />
-          </div>
-          <span className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/70">
-            TripMate
-          </span>
+        <Link href="/" className="flex items-center transition-transform hover:scale-105">
+          <img src="/logo.png" alt="TripMate Logo" className="h-10 w-auto object-contain" />
         </Link>
 
         {/* Desktop Navigation */}

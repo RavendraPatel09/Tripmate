@@ -7,11 +7,8 @@ export function Footer() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="bg-primary p-1.5 rounded-xl">
-                <Plane className="h-5 w-5 text-primary-foreground fill-current" />
-              </div>
-              <span className="text-xl font-bold">TripMate</span>
+            <Link href="/" className="flex items-center">
+              <img src="/logo.png" alt="TripMate Logo" className="h-8 w-auto object-contain mb-2" />
             </Link>
             <p className="text-muted-foreground text-sm">
               Your intelligent travel companion for seamless journeys, budget planning, and unforgettable experiences.
