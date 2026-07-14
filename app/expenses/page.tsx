@@ -98,7 +98,7 @@ export default function ExpenseTracker() {
                     ))}
                   </Pie>
                   <Tooltip 
-                    formatter={(value: number) => [`₹${value}`, 'Spent']}
+                    formatter={(value: any) => [`₹${value}`, 'Spent']}
                     contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                   />
                 </PieChart>

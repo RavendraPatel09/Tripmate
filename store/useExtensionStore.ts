@@ -16,14 +16,14 @@ interface ExtensionState {
 }
 
 export const useExtensionStore = create<ExtensionState>((set) => ({
-  packingItems: MOCK_PACKING_ITEMS,
+  packingItems: MOCK_PACKING_ITEMS as PackingItem[],
   togglePackingItem: (id) => set((state) => ({
     packingItems: state.packingItems.map(item => 
       item.id === id ? { ...item, isPacked: !item.isPacked } : item
     )
   })),
   
-  expenses: MOCK_EXPENSES,
+  expenses: MOCK_EXPENSES as Expense[],
   addExpense: (expense) => set((state) => ({
     expenses: [...state.expenses, { ...expense, id: `e${Date.now()}` }]
   })),
@@ -31,7 +31,7 @@ export const useExtensionStore = create<ExtensionState>((set) => ({
     expenses: state.expenses.filter(e => e.id !== id)
   })),
   
-  notifications: MOCK_NOTIFICATIONS,
+  notifications: MOCK_NOTIFICATIONS as NotificationItem[],
   markNotificationRead: (id) => set((state) => ({
     notifications: state.notifications.map(n => 
       n.id === id ? { ...n, isRead: true } : n

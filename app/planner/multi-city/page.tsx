@@ -84,9 +84,9 @@ export default function MultiCityPlanner() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 draggable
-                onDragStart={(e) => handleDragStart(e, index)}
-                onDragOver={(e) => handleDragOver(e, index)}
-                onDrop={handleDrop}
+                onDragStart={(e) => handleDragStart(e as any, index)}
+                onDragOver={(e) => handleDragOver(e as any, index)}
+                onDrop={(e) => handleDrop(e as any)}
                 onDragEnd={() => setDraggedIndex(null)}
                 className={`relative pl-8 ${draggedIndex === index ? 'opacity-50' : 'opacity-100'}`}
               >
