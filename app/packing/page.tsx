@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { CheckSquare, Square, Luggage, Shirt, Smartphone, Pill, FileText, Sunglasses } from 'lucide-react';
+import { CheckSquare, Square, Luggage, Shirt, Smartphone, Pill, FileText, Glasses } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -13,7 +13,7 @@ const ICONS = {
   Electronics: Smartphone,
   Medicines: Pill,
   Documents: FileText,
-  Accessories: Sunglasses,
+  Accessories: Glasses,
 };
 
 export default function SmartPacking() {

@@ -6,11 +6,11 @@ import { Map as MapIcon, Heart, Navigation2, CheckCircle2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 
 // Dynamically import map to prevent SSR issues
-const MapView = dynamic(
-  () => import('@/components/map/map-view').then((mod) => mod.MapView),
+const JourneyMap = dynamic(
+  () => import('@/components/planner/map').then((mod) => mod.JourneyMap),
   { 
     ssr: false,
-    loading: () => <Skeleton className="w-full h-full rounded-2xl" />
+    loading: () => <Skeleton className="w-full h-full min-h-[400px] rounded-2xl" />
   }
 );
 
@@ -48,14 +48,7 @@ export default function TravelMapPage() {
       </div>
 
       <div className="flex-1 rounded-2xl overflow-hidden border shadow-sm relative min-h-[400px]">
-        {/* We reuse the MapView component but can pass different markers. For now, empty coordinates will center globally or we can pass some mock pins if the MapView supported it. */}
-        <MapView 
-          coordinates={[
-            [28.6139, 77.2090], // Delhi
-            [15.2993, 74.1240], // Goa
-            [32.2396, 77.1887], // Manali
-          ]}
-        />
+        <JourneyMap />
         
         {/* Floating legend */}
         <Card className="absolute bottom-6 right-6 z-[400] shadow-xl border-none">
