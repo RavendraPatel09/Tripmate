@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Bookmark, UserPlus, TrendingUp } from "lucide-react";
 
 const MOCK_POSTS = [
   {
@@ -60,8 +61,9 @@ export default function CommunityPage() {
         </CardContent>
       </Card>
 
-      <div className="space-y-6">
-        {MOCK_POSTS.map((post, index) => (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2 space-y-6">
+          {MOCK_POSTS.map((post, index) => (
           <motion.div
             key={post.id}
             initial={{ opacity: 0, y: 20 }}
@@ -82,6 +84,9 @@ export default function CommunityPage() {
                     <span>{post.time}</span>
                   </div>
                 </div>
+                <Button variant="outline" size="sm" className="ml-auto rounded-full gap-2">
+                  <UserPlus className="h-4 w-4" /> Follow
+                </Button>
               </CardHeader>
               <CardContent className="px-4 sm:px-6 py-0">
                 <p className="text-sm md:text-base leading-relaxed mb-4">{post.content}</p>
@@ -98,13 +103,66 @@ export default function CommunityPage() {
                 <button className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors">
                   <MessageSquare className="h-5 w-5" /> {post.comments}
                 </button>
-                <button className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors ml-auto">
-                  <Share2 className="h-5 w-5" /> Share
-                </button>
+                <div className="ml-auto flex items-center gap-4">
+                  <button className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors">
+                    <Bookmark className="h-5 w-5" />
+                  </button>
+                  <button className="flex items-center gap-1.5 text-sm hover:text-primary transition-colors">
+                    <Share2 className="h-5 w-5" />
+                  </button>
+                </div>
               </CardFooter>
             </Card>
           </motion.div>
         ))}
+        </div>
+        
+        {/* Right Sidebar - Trending */}
+        <div className="hidden lg:block space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                Trending Destinations
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {["Bali, Indonesia", "Kyoto, Japan", "Manali, India", "Swiss Alps"].map((dest, i) => (
+                <div key={i} className="flex items-center justify-between group cursor-pointer">
+                  <div>
+                    <p className="font-medium group-hover:text-primary transition-colors">#{dest.replace(", ", "")}</p>
+                    <p className="text-xs text-muted-foreground">{Math.floor(Math.random() * 50 + 10)}k posts</p>
+                  </div>
+                  <Button variant="ghost" size="sm" className="h-8">Explore</Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-lg">Who to Follow</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {[
+                { name: "Sarah Travels", img: "https://i.pravatar.cc/150?u=1" },
+                { name: "Mountain Junkie", img: "https://i.pravatar.cc/150?u=2" },
+                { name: "Food Explorer", img: "https://i.pravatar.cc/150?u=3" }
+              ].map((user, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={user.img} />
+                  </Avatar>
+                  <div className="flex-1 overflow-hidden">
+                    <p className="font-medium text-sm truncate">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">Suggested for you</p>
+                  </div>
+                  <Button variant="outline" size="sm" className="h-7 px-3 text-xs rounded-full">Follow</Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );
