@@ -18,11 +18,12 @@ logs/
 # test / coverage
 coverage/
 
-# db dumps / local db files
-*.sql
+# db dumps / local db files — NOT prisma/migrations/**, which must be committed
 *.dump
 prisma/*.db
 postgres-data/
+*.sql
+!prisma/migrations/**/*.sql
 
 # editor / os
 .vscode/
