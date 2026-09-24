@@ -1,0 +1,41 @@
+import { Router } from 'express';
+import { authRouter } from '@/modules/auth/auth.routes';
+import { usersRouter } from '@/modules/users/users.routes';
+import { tripsRouter } from '@/modules/trips/trips.routes';
+import { destinationsRouter } from '@/modules/destinations/destinations.routes';
+import { foodsRouter } from '@/modules/foods/foods.routes';
+import { hiddenGemsRouter } from '@/modules/hiddenGems/hiddenGems.routes';
+import { eventsRouter } from '@/modules/events/events.routes';
+import { emergencyContactsRouter } from '@/modules/emergencyContacts/emergencyContacts.routes';
+import { meRouter } from '@/modules/savedDestinations/savedDestinations.routes';
+import { packingRouter } from '@/modules/packing/packing.routes';
+import { expensesRouter } from '@/modules/expenses/expenses.routes';
+import { budgetRouter } from '@/modules/budget/budget.routes';
+import { plannerRouter } from '@/modules/planner/planner.routes';
+import { aiRouter } from '@/modules/ai/ai.routes';
+import { achievementsRouter } from '@/modules/achievements/achievements.routes';
+import { notificationsRouter } from '@/modules/notifications/notifications.routes';
+import { communityRouter } from '@/modules/community/community.routes';
+import { adminRouter } from '@/modules/admin/admin.routes';
+
+export const apiRouter = Router();
+
+apiRouter.use('/auth', authRouter);
+apiRouter.use('/users', usersRouter);
+apiRouter.use('/trips', tripsRouter);
+apiRouter.use('/destinations', destinationsRouter);
+apiRouter.use('/foods', foodsRouter);
+apiRouter.use('/hidden-gems', hiddenGemsRouter);
+apiRouter.use('/events', eventsRouter);
+apiRouter.use('/emergency-contacts', emergencyContactsRouter);
+apiRouter.use('/me', meRouter);
+apiRouter.use('/packing-items', packingRouter);
+apiRouter.use('/expenses', expensesRouter);
+apiRouter.use('/budget', budgetRouter);
+apiRouter.use('/planner', plannerRouter);
+apiRouter.use('/ai', aiRouter);
+apiRouter.use('/achievements', achievementsRouter);
+apiRouter.use('/notifications', notificationsRouter);
+apiRouter.use('/community', communityRouter);
+// Every route mounted here requires auth + role=ADMIN — see admin.routes.ts.
+apiRouter.use('/admin', adminRouter);
