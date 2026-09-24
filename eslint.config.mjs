@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Standalone backend project with its own tooling/deps — not part of
+    // this Next.js app's lint/type-check surface.
+    "tripmate-backend/**",
   ]),
 ]);
 
