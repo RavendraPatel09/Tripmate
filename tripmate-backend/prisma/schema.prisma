@@ -1,0 +1,363 @@
+// TripMate backend — Prisma schema
+// All public-facing identifiers are UUIDs (never sequential integers) per the
+// security requirements in API_CONTRACT.md.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------------------------
+// Auth / users
+// ---------------------------------------------------------------------------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  avatar       String?
+  role         Role     @default(USER)
+
+  // Login hardening (account lockout / exponential backoff)
+  failedLoginAttempts Int       @default(0)
+  lockedUntil         DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  trips               Trip[]
+  savedDestinations    SavedDestination[]
+  packingItems        PackingItem[]
+  expenses            Expense[]
+  notifications       Notification[]
+  achievements        UserAchievement[]
+  communityPosts      CommunityPost[]
+  postLikes           PostLike[]
+  postComments        PostComment[]
+
+  @@index([email])
+}
+
+// Refresh tokens are stored HASHED (never the raw token) with rotation +
+// revocation support, so a stolen DB dump can't be replayed as a session.
+model RefreshToken {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  replacedBy  String?
+  createdByIp String?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(uuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// Trips
+// ---------------------------------------------------------------------------
+
+enum TripStatus {
+  PLANNING
+  UPCOMING
+  COMPLETED
+  CANCELLED
+}
+
+model Trip {
+  id              String     @id @default(uuid())
+  userId          String
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title           String
+  originName      String?
+  destinationName String
+  startDate       DateTime
+  endDate         DateTime
+  budgetTotal     Decimal?   @db.Decimal(12, 2)
+  travelers       Int        @default(1)
+  status          TripStatus @default(PLANNING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  members      TripMember[]
+  packingItems PackingItem[]
+  expenses     Expense[]
+
+  @@index([userId])
+}
+
+model TripMember {
+  id      String  @id @default(uuid())
+  tripId  String
+  trip    Trip    @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  name    String
+  avatar  String?
+  balance Decimal @default(0) @db.Decimal(12, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tripId])
+}
+
+// ---------------------------------------------------------------------------
+// Catalog data (public read, admin write)
+// ---------------------------------------------------------------------------
+
+enum BudgetTier {
+  budget
+  mid_range
+  luxury
+}
+
+model Destination {
+  id               String     @id @default(uuid())
+  name             String
+  description      String
+  image            String
+  rating           Float      @default(0)
+  weather          String?
+  budgetTier       BudgetTier @default(mid_range)
+  distance         String?
+  categories       String[]
+  travelTime       String?
+  popularityScore  Int        @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  savedBy SavedDestination[]
+}
+
+model FoodItem {
+  id          String   @id @default(uuid())
+  name        String
+  image       String
+  price       Decimal  @db.Decimal(10, 2)
+  rating      Float    @default(0)
+  location    String
+  description String
+  category    String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model HiddenGem {
+  id               String   @id @default(uuid())
+  name             String
+  photos           String[]
+  description      String
+  crowdLevel       String
+  difficultyLevel  String
+  localTips        String
+  bestSeason       String
+  estimatedBudget  Decimal  @db.Decimal(10, 2)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EventItem {
+  id          String   @id @default(uuid())
+  name        String
+  date        String
+  location    String
+  description String
+  popularity  Int      @default(0)
+  image       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model EmergencyContact {
+  id       String  @id @default(uuid())
+  name     String
+  type     String
+  phone    String
+  distance String?
+  address  String
+  city     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([city])
+}
+
+// ---------------------------------------------------------------------------
+// User-owned resources
+// ---------------------------------------------------------------------------
+
+enum SavedListType {
+  SAVED
+  WISHLIST
+}
+
+model SavedDestination {
+  id            String        @id @default(uuid())
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  destinationId String
+  destination   Destination   @relation(fields: [destinationId], references: [id], onDelete: Cascade)
+  listType      SavedListType
+
+  createdAt DateTime @default(now())
+
+  @@unique([userId, destinationId, listType])
+  @@index([userId])
+}
+
+model PackingItem {
+  id       String  @id @default(uuid())
+  userId   String
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId   String?
+  trip     Trip?   @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  name     String
+  category String
+  isPacked Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Expense {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId      String?
+  trip        Trip?    @relation(fields: [tripId], references: [id], onDelete: SetNull)
+  amount      Decimal  @db.Decimal(12, 2)
+  category    String
+  description String
+  date        DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Achievement {
+  id          String @id @default(uuid())
+  title       String
+  description String
+  icon        String
+  maxProgress Int    @default(1)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(uuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  progress      Int         @default(0)
+  isUnlocked    Boolean     @default(false)
+  unlockedAt    DateTime?
+
+  @@unique([userId, achievementId])
+  @@index([userId])
+}
+
+enum NotificationType {
+  trip
+  budget
+  weather
+  community
+  event
+}
+
+model Notification {
+  id      String            @id @default(uuid())
+  userId  String
+  user    User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title   String
+  message String
+  type    NotificationType
+  isRead  Boolean           @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ---------------------------------------------------------------------------
+// Community
+// ---------------------------------------------------------------------------
+
+model CommunityPost {
+  id       String  @id @default(uuid())
+  authorId String
+  author   User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content  String
+  image    String?
+  location String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likes    PostLike[]
+  comments PostComment[]
+
+  @@index([authorId])
+}
+
+model PostLike {
+  id        String        @id @default(uuid())
+  postId    String
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime      @default(now())
+
+  @@unique([postId, userId])
+  @@index([postId])
+}
+
+model PostComment {
+  id        String        @id @default(uuid())
+  postId    String
+  post      CommunityPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  content   String
+  createdAt DateTime      @default(now())
+
+  @@index([postId])
+}

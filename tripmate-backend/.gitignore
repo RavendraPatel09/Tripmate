@@ -1,0 +1,33 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+*.tsbuildinfo
+
+# env — never commit any .env file (including .env.test, which holds
+# fake-but-secret-shaped test values) — only .env.example is tracked.
+.env*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+logs/
+
+# test / coverage
+coverage/
+
+# db dumps / local db files
+*.sql
+*.dump
+prisma/*.db
+postgres-data/
+
+# editor / os
+.vscode/
+.idea/
+.DS_Store
+
+# docker
+docker-compose.override.yml
